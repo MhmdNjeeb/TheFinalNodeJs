@@ -1,0 +1,16 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+# Editor-based HTTP Client requests
+/httpRequests/
+# Node.js modules
+node_modules/
+
+# IDE-specific files
+.idea/
+*.iml
+
+# Other optional entries
+.DS_Store         # macOS specific
+.env              # Environment variables
+npm-debug.log     # npm debug log files
