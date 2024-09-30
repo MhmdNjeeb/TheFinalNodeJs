@@ -1,8 +1,34 @@
 <%- include("page_top.ejs") %>
 
+<h1>נקודות ביקור</h1>
+<ul>
+    <% points.forEach(point => { %>
+        <li>
+            <%= point.name %> - <%= point.location %>
+            <form action="/points/edit/<%= point.id %>" method="GET" style="display:inline;">
+                <button type="submit">ערוך</button>
+            </form>
+            <form action="/points/delete/<%= point.id %>" method="POST" style="display:inline;">
+                <button type="submit">מחק</button>
+            </form>
+        </li>
+    <% }) %>
+</ul>
 
-<h2>Hello</h2>
+<form action="/points/add" method="POST">
+    <input type="text" name="name" placeholder="שם הנקודה" required>
+    <input type="text" name="location" placeholder="מיקום" required>
+    <button type="submit">הוסף נקודה</button>
+</form>
 
-
+<h2>הזנת ביקור</h2>
+<form action="/visits/log" method="POST">
+    <select name="pointId">
+        <% points.forEach(point => { %>
+            <option value="<%= point.id %>"><%= point.name %></option>
+        <% }) %>
+    </select>
+    <button type="submit">הזן ביקור</button>
+</form>
 
 <%- include("page_bottom.ejs") %>
