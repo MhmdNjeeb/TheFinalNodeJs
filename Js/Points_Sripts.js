@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const db_pool = require('/database');
-
+module.exports = router;
 
 router.post("/add", (req, res) => {
     const { name, location } = req.body;
