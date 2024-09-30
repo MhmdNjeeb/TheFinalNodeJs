@@ -1,13 +1,12 @@
 const express = require('express');
 const router = express.Router();
-module.exports = router;
+
 
 router.post("/add", (req, res) => {
     const { name, location } = req.body;
+    const q = `INSERT INTO points (name, location) VALUES (?, ?)`;
 
-    const q = `INSERT INTO points (name, location) VALUES ('${name}', '${location}')`;
-
-    db_pool.query(q, (err, result) => {
+    db_pool.query(q, [name, location], (err, result) => {
         if (err) {
             res.status(500).json({ message: err.message });
         } else {
@@ -16,14 +15,29 @@ router.post("/add", (req, res) => {
     });
 });
 
-
 router.patch("/edit/:id", (req, res) => {
     const id = req.params.id;
     const { name, location } = req.body;
+    const updates = [];
+    const values = [];
 
-    const q = `UPDATE points SET name = '${name}', location = '${location}' WHERE id = ${id}`;
+    if (name) {
+        updates.push("name = ?");
+        values.push(name);
+    }
+    if (location) {
+        updates.push("location = ?");
+        values.push(location);
+    }
 
-    db_pool.query(q, (err, result) => {
+    if (updates.length === 0) {
+        return res.status(400).json({ message: "No fields to update" });
+    }
+
+    const q = `UPDATE points SET ${updates.join(", ")} WHERE id = ?`;
+    values.push(id);
+
+    db_pool.query(q, values, (err, result) => {
         if (err) {
             res.status(500).json({ message: err.message });
         } else {
@@ -32,13 +46,11 @@ router.patch("/edit/:id", (req, res) => {
     });
 });
 
-
 router.delete("/delete/:id", (req, res) => {
     const id = req.params.id;
+    const q = `DELETE FROM points WHERE id = ?`;
 
-    const q = `DELETE FROM points WHERE id = ${id}`;
-
-    db_pool.query(q, (err, result) => {
+    db_pool.query(q, [id], (err, result) => {
         if (err) {
             res.status(500).json({ message: err.message });
         } else {
@@ -46,7 +58,6 @@ router.delete("/delete/:id", (req, res) => {
         }
     });
 });
-
 
 router.get("/list", (req, res) => {
     const q = "SELECT * FROM points";

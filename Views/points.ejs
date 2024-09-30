@@ -1,34 +1,124 @@
 <%- include("page_top.ejs") %>
 
 <h1>נקודות ביקור</h1>
-<ul>
-    <% points.forEach(point => { %>
-        <li>
-            <%= point.name %> - <%= point.location %>
-            <form action="/points/edit/<%= point.id %>" method="GET" style="display:inline;">
-                <button type="submit">ערוך</button>
-            </form>
-            <form action="/points/delete/<%= point.id %>" method="POST" style="display:inline;">
-                <button type="submit">מחק</button>
-            </form>
-        </li>
-    <% }) %>
-</ul>
 
-<form action="/points/add" method="POST">
-    <input type="text" name="name" placeholder="שם הנקודה" required>
-    <input type="text" name="location" placeholder="מיקום" required>
-    <button type="submit">הוסף נקודה</button>
-</form>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Location</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody id="mainTable"> </tbody>
+</table>
 
-<h2>הזנת ביקור</h2>
-<form action="/visits/log" method="POST">
-    <select name="pointId">
-        <% points.forEach(point => { %>
-            <option value="<%= point.id %>"><%= point.name %></option>
-        <% }) %>
-    </select>
-    <button type="submit">הזן ביקור</button>
-</form>
+<h2>Add New Point</h2>
+<br>
+<input type="text" id="pointName" placeholder="Point Name" required>
+<input type="text" id="pointLocation" placeholder="Point Location" required>
+<button onclick="addNewPoint()">Add Point</button>
+<br><br>
+
+<h2>Delete Point by ID</h2>
+<br>
+<input type="text" id="deletePointID" placeholder="Enter Point ID">
+<button onclick="deletePoint()">Delete Point by ID</button>
+<br><br>
+
+<h2>Update Point</h2>
+<br>
+<input type="text" id="updatePointID" placeholder="Enter Point ID">
+<input type="text" id="updatedPointName" placeholder="Updated Name">
+<input type="text" id="updatedPointLocation" placeholder="Updated Location">
+<button onclick="editPoint()">Update Point</button>
+
+<script>
+    let raw_data = [];
+
+    function createTable() {
+        let str = "";
+        for (let line of raw_data) {
+            str += "<tr>";
+            str += `<td>${line.id}</td>`;
+            str += `<td>${line.name}</td>`;
+            str += `<td>${line.location}</td>`;
+            str += "</tr>";
+        }
+        document.getElementById("mainTable").innerHTML = str;
+    }
+
+    async function getList() {
+        let response = await fetch('/points/List');
+        let data = await response.json();
+        raw_data = data;
+        createTable();
+    }
+
+    async function addNewPoint() {
+        let name = document.getElementById("pointName").value;
+        let location = document.getElementById("pointLocation").value;
+
+        let response = await fetch('/points/Add', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ name: name, location: location })
+        });
+
+        if (response.ok) {
+            getList();
+        } else {
+            console.error('Error adding point:', response.statusText);
+        }
+    }
+
+    async function deletePoint() {
+        let pointID = document.getElementById("deletePointID").value;
+
+        try {
+            let response = await fetch(`/points/delete/${pointID}`, {
+                method: 'DELETE'
+            });
+
+            if (response.ok) {
+                getList();
+            } else {
+                console.error('Error deleting point:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+
+    async function editPoint() {
+        let pointID = document.getElementById("updatePointID").value;
+        let updatedName = document.getElementById("updatedPointName").value;
+        let updatedLocation = document.getElementById("updatedPointLocation").value;
+
+        if (!pointID || (!updatedName && !updatedLocation)) {
+            return;
+        }
+
+        let response = await fetch(`/points/Edit/${pointID}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ name: updatedName, location: updatedLocation })
+        });
+
+        if (response.ok) {
+            getList();
+        } else {
+            console.error('Error updating point:', response.statusText);
+        }
+    }
+
+    // Initialize the list on page load
+    getList();
+</script>
 
 <%- include("page_bottom.ejs") %>
