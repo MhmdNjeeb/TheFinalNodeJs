@@ -1,3 +1,7 @@
+export function query(q, param2) {
+    
+}
+
 // https://www.npmjs.com/package/mysql2
 const mysql = require('mysql2');
 
