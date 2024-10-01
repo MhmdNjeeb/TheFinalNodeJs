@@ -8,6 +8,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 
 app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'Js')));
 
 const db_M = require('./database');
 global.db_pool = db_M.pool;
