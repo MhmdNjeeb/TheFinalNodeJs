@@ -6,36 +6,36 @@
     <thead>
     <tr>
         <th>ID</th>
-        <th>Name</th>
-        <th>Location</th>
+        <th>שם</th>
+        <th>מיקום</th>
         <th></th>
     </tr>
     </thead>
     <tbody id="mainTable"> </tbody>
 </table>
 
-<h2>Add New Point</h2>
+<h2>הוסף נקודה חדשה</h2>
 <br>
-<input type="text" id="pointName" placeholder="Point Name" required>
-<input type="text" id="pointLocation" placeholder="Point Location" required>
-<button onclick="addNewPoint()">Add Point</button>
+<input type="text" id="pointName" placeholder="שם הנקודה" required>
+<input type="text" id="pointLocation" placeholder="מיקום הנקודה" required>
+<button onclick="addNewPoint()">הוסף נקודה</button>
 <br><br>
 
-<h2>Delete Point by ID</h2>
+<h2>מחק נקודה לפי ID</h2>
 <br>
-<input type="text" id="deletePointID" placeholder="Enter Point ID">
-<button onclick="deletePoint()">Delete Point by ID</button>
+<input type="text" id="deletePointID" placeholder="הכנס ID של נקודה">
+<button onclick="deletePoint()">מחק נקודה לפי ID</button>
 <br><br>
 
-<h2>Update Point</h2>
+<h2>עדכן נקודה</h2>
 <br>
-<input type="text" id="updatePointID" placeholder="Enter Point ID">
-<input type="text" id="updatedPointName" placeholder="Updated Name">
-<input type="text" id="updatedPointLocation" placeholder="Updated Location">
-<button onclick="editPoint()">Update Point</button>
+<input type="text" id="updatePointID" placeholder="הכנס ID של נקודה">
+<input type="text" id="updatedPointName" placeholder="שם מעודכן">
+<input type="text" id="updatedPointLocation" placeholder="מיקום מעודכן">
+<button onclick="editPoint()">עדכן נקודה</button>
 
 <br><br>
-<button onclick="window.location.href='/visits'">Move to Visits</button>
+<button onclick="window.location.href='/visits'">מעבר לדף ביקורים</button>
 
 <script src="/points.js"></script>
 <%- include("page_bottom.ejs") %>
