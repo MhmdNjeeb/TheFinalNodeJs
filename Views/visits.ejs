@@ -1,0 +1,25 @@
+<%- include("page_top.ejs") %>
+
+<h1>רישום ביקור בנקודה</h1>
+
+<form action="/visits/add" method="POST">
+    <label for="pointId">בחר נקודת ביקור:</label>
+    <select name="pointId" id="pointId" required>
+        <% points.forEach(point => { %>
+            <option value="<%= point.id %>"><%= point.name %> - <%= point.location %></option>
+        <% }) %>
+    </select>
+    <br><br>
+
+    <label for="guardName">שם השומר:</label>
+    <input type="text" id="guardName" name="guardName" placeholder="הכנס שם שומר" required>
+    <br><br>
+
+    <label for="notes">הערות (אופציונלי):</label>
+    <textarea id="notes" name="notes" placeholder="הוסף הערות אם יש..."></textarea>
+    <br><br>
+
+    <button type="submit">הזן ביקור</button>
+</form>
+
+<%- include("page_bottom.ejs") %>
