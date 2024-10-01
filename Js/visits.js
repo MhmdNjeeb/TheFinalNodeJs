@@ -82,5 +82,5 @@ async function editVisit() {
     }
 }
 
-// Initialize the list on page load
+
 getList();
