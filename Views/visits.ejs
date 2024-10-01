@@ -1,25 +1,39 @@
 <%- include("page_top.ejs") %>
 
-<h1>רישום ביקור בנקודה</h1>
+<h1>ביקורים</h1>
 
-<form action="/visits/add" method="POST">
-    <label for="pointId">בחר נקודת ביקור:</label>
-    <select name="pointId" id="pointId" required>
-        <% points.forEach(point => { %>
-            <option value="<%= point.id %>"><%= point.name %> - <%= point.location %></option>
-        <% }) %>
-    </select>
-    <br><br>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>שם שומר</th>
+        <th>הערות</th>
+        <th>זמן ביקור</th>
+    </tr>
+    </thead>
+    <tbody id="mainTable"> </tbody>
+</table>
 
-    <label for="guardName">שם השומר:</label>
-    <input type="text" id="guardName" name="guardName" placeholder="הכנס שם שומר" required>
-    <br><br>
+<h2>הוסף ביקור חדש</h2>
+<br>
+<input type="text" id="pointId" placeholder="Point ID" required>
+<input type="text" id="guardName" placeholder="Guard Name" required>
+<input type="text" id="notes" placeholder="Notes">
+<button onclick="addNewVisit()">הוסף ביקור</button>
+<br><br>
 
-    <label for="notes">הערות (אופציונלי):</label>
-    <textarea id="notes" name="notes" placeholder="הוסף הערות אם יש..."></textarea>
-    <br><br>
+<h2>מחק ביקור לפי ID</h2>
+<br>
+<input type="text" id="deleteVisitID" placeholder="Enter Visit ID">
+<button onclick="deleteVisit()">מחק ביקור</button>
+<br><br>
 
-    <button type="submit">הזן ביקור</button>
-</form>
+<h2>עדכן ביקור</h2>
+<br>
+<input type="text" id="updateVisitID" placeholder="Enter Visit ID">
+<input type="text" id="updatedGuardName" placeholder="Updated Guard Name">
+<input type="text" id="updatedNotes" placeholder="Updated Notes">
+<button onclick="editVisit()">עדכן ביקור</button>
 
+<script src="/visits.js"></script>
 <%- include("page_bottom.ejs") %>
