@@ -18,6 +18,9 @@ app.use('/', fe);
 const pointsRoutes = require('./js/Points_Sripts');
 app.use('/points', pointsRoutes);
 
+const visitsRoutes = require('./js/Visits_Scripts');
+app.use('/visits', visitsRoutes);
+
 app.listen(port, () => {            //server starts listening for any attempts from a client to connect at port: {port}
     console.log(`Now listening on port http://localhost:${port}`);
 });
